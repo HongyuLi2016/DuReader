@@ -59,7 +59,8 @@ def rnn(rnn_type, inputs, length, hidden_size, layer_num=1, dropout_keep_prob=No
             states_fw, states_bw = h_fw, h_bw
         if concat:
             outputs = tf.concat(outputs, 2)
-            states = tf.concat([states_fw, states_bw], 1)
+            states = tuple(tf.concat([s_fw, s_bw], 1) for s_fw, s_bw in
+                           zip(states_fw, states_bw))
         else:
             outputs = outputs[0] + outputs[1]
             states = states_fw + states_bw
